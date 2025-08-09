@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercedes Dealer - Concesionario Oficial</title>
+
+    <!-- SEO y Metadatos -->
+    <meta name="description" content="Mercedes Dealer, su concesionario oficial. Encuentre y compre los últimos modelos de Mercedes-Benz de forma fácil y segura.">
+    <meta name="keywords" content="comprar mercedes, venta de vehículos, concesionario mercedes, autos de lujo, Mercedes Dealer">
+    <meta name="author" content="Mercedes Dealer">
+    
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6.5.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <!-- Estilos Personalizados -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header y Navegación -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" aria-label="Navegación principal">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="#inicio">
+                    <i class="fas fa-star me-2"></i>MERCEDES DEALER
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#inicio">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#vehiculos">Vehículos</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex me-3" role="search">
+                        <input id="searchInput" class="form-control me-2" type="search" placeholder="Buscar por modelo..." aria-label="Campo de búsqueda de vehículos">
+                    </form>
+                    <div class="text-white" role="button" data-bs-toggle="modal" data-bs-target="#cartModal" aria-label="Abrir carrito de compras">
+                        <i class="fas fa-shopping-cart fa-lg"></i>
+                        <span id="cartCount" class="badge rounded-pill bg-danger ms-1">0</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="hero-section">
+            <!-- La imagen de fondo se define en CSS -->
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="container my-5">
+        <section id="inicio" class="text-center my-5 pt-5">
+            <h1 class="display-4 text-white shadow-text">Mercedes Dealer</h1>
+            <p class="lead text-white shadow-text">La excelencia no es una opción, es nuestro estándar.</p>
+        </section>
+
+        <section id="vehiculos" class="pt-5">
+            <h2 class="text-center mb-4">Nuestros Vehículos</h2>
+            <div id="loadingSpinner" class="d-flex justify-content-center my-5">
+                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Cargando vehículos...</span>
+                </div>
+            </div>
+            <div id="productsContainer" class="row">
+                <!-- Las tarjetas de vehículos se insertarán aquí dinámicamente -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center p-3 mt-auto">
+        <div class="container">
+            <p>&copy; 2025 Mercedes Dealer. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Cantidad (Sin cambios estructurales) -->
+    <div class="modal fade" id="quantityModal" tabindex="-1" aria-labelledby="quantityModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="quantityModalLabel">Seleccionar Cantidad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Cuántas unidades deseas añadir al carrito?</p>
+                    <input type="number" id="quantityInput" class="form-control" value="1" min="1" aria-label="Cantidad de unidades">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="addToCartBtn" class="btn btn-danger">Añadir al Carrito</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal del Carrito -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="cartModalLabel">Carrito de Compras</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItems">
+                        <!-- Items del carrito se insertarán aquí -->
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div>
+                        <strong>Total: <span id="cartTotal">$0.00</span></strong>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir viendo</button>
+                        <button type="button" id="checkoutBtn" class="btn btn-danger">Pagar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Pago (Sin cambios estructurales) -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Formulario de Pago</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="paymentForm">
+                        <div class="mb-3">
+                            <label for="cardName" class="form-label">Nombre en la Tarjeta</label>
+                            <input type="text" class="form-control" id="cardName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">Número de Tarjeta</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="xxxx-xxxx-xxxx-xxxx" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="processPaymentBtn" class="btn btn-success">Procesar Pago</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.3.3 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jsPDF 2.5.1 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Script Personalizado -->
+    <script src="script.js"></script>
+</body>
+</html>

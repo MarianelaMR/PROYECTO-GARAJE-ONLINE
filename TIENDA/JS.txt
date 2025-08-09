@@ -1,0 +1,247 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Constantes para elementos del DOM
+    const productsContainer = document.getElementById('productsContainer');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const searchInput = document.getElementById('searchInput');
+    const cartCount = document.getElementById('cartCount');
+    const cartItemsContainer = document.getElementById('cartItems');
+    const cartTotalSpan = document.getElementById('cartTotal');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const processPaymentBtn = document.getElementById('processPaymentBtn');
+    const quantityInput = document.getElementById('quantityInput');
+    const addToCartModalBtn = document.getElementById('addToCartBtn');
+
+    // Estado de la aplicación
+    let vehiclesData = [];
+    let cart = [];
+    let selectedVehicle = null;
+
+    // Instancias de Modales de Bootstrap
+    const quantityModal = new bootstrap.Modal(document.getElementById('quantityModal'));
+    const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+    const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+
+    // URL del JSON de vehículos
+    const DATA_URL = 'https://raw.githubusercontent.com/JUANCITOPENA/Pagina_Vehiculos_Ventas/refs/heads/main/vehiculos.json';
+
+    const loadVehicles = async () => {
+        loadingSpinner.style.display = 'flex';
+        try {
+            const response = await fetch(DATA_URL);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            vehiclesData = await response.json();
+            displayVehicles(vehiclesData);
+        } catch (error) {
+            console.error("Error al cargar los datos de los vehículos:", error);
+            productsContainer.innerHTML = `<p class="text-center text-danger">Error al cargar los productos. Por favor, intente más tarde.</p>`;
+        } finally {
+            loadingSpinner.style.display = 'none';
+        }
+    };
+
+    const displayVehicles = (vehicles) => {
+        productsContainer.innerHTML = '';
+        if (vehicles.length === 0) {
+            productsContainer.innerHTML = `<p class="text-center">No se encontraron vehículos.</p>`;
+            return;
+        }
+
+        vehicles.forEach(vehicle => {
+            const card = document.createElement('div');
+            card.className = 'col-lg-4 col-md-6 mb-4';
+            card.innerHTML = `
+                <div class="card h-100">
+                    <img src="${vehicle.imagen}" class="card-img-top" alt="${vehicle.marca} ${vehicle.modelo}" loading="lazy">
+                    <div class="card-body">
+                        <h5 class="card-title">${vehicle.marca} ${vehicle.modelo}</h5>
+                        <p class="card-text">
+                            <strong>Categoría:</strong> ${vehicle.categoria}<br>
+                            <strong>Tipo:</strong> ${vehicle.tipo.replace(/[\u{1F600}-\u{1F64F}]/gu, '').trim()}
+                        </p>
+                    </div>
+                    <div class="card-footer text-center">
+                         <p class="h5 price-text fw-bold">${vehicle.precio_venta.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</p>
+                         <button class="btn btn-danger w-100 addToCartBtn" data-codigo="${vehicle.codigo}">Añadir al Carrito</button>
+                    </div>
+                </div>
+            `;
+            productsContainer.appendChild(card);
+        });
+        addAddToCartListeners();
+    };
+    
+    const filterVehicles = () => {
+        const query = searchInput.value.toLowerCase().trim();
+        const filteredVehicles = vehiclesData.filter(v => 
+            v.marca.toLowerCase().includes(query) ||
+            v.modelo.toLowerCase().includes(query) ||
+            v.categoria.toLowerCase().includes(query)
+        );
+        displayVehicles(filteredVehicles);
+    };
+
+    const addAddToCartListeners = () => {
+        document.querySelectorAll('.addToCartBtn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const codigo = parseInt(event.target.getAttribute('data-codigo'));
+                selectedVehicle = vehiclesData.find(v => v.codigo === codigo);
+                showQuantityModal();
+            });
+        });
+    };
+
+    const showQuantityModal = () => {
+        quantityInput.value = '1';
+        quantityModal.show();
+    };
+    
+    const addItemToCart = (vehicle, quantity) => {
+        if (quantity <= 0) return;
+        const existingItem = cart.find(item => item.codigo === vehicle.codigo);
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            cart.push({ ...vehicle, quantity });
+        }
+        updateCartUI();
+        quantityModal.hide();
+    };
+
+    const updateCartUI = () => {
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
+        let totalItems = 0;
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p class="text-center">Tu carrito está vacío.</p>';
+        } else {
+            cart.forEach(item => {
+                const subtotal = item.precio_venta * item.quantity;
+                total += subtotal;
+                totalItems += item.quantity;
+
+                const itemElement = document.createElement('div');
+                itemElement.className = 'd-flex justify-content-between align-items-center mb-3';
+                itemElement.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <img src="${item.imagen}" alt="${item.marca}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 5px;">
+                        <div class="ms-3">
+                            <h6 class="mb-0">${item.marca} ${item.modelo}</h6>
+                            <small class="text-muted">Cantidad: ${item.quantity}</small>
+                        </div>
+                    </div>
+                    <strong>${subtotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</strong>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+        }
+        
+        cartTotalSpan.textContent = total.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        cartCount.textContent = totalItems;
+        if (totalItems > 0) {
+            cartCount.style.animation = 'pulse 1.5s 1';
+            setTimeout(() => cartCount.style.animation = '', 1500);
+        }
+    };
+    
+    const generateInvoice = () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        const cardName = document.getElementById('cardName').value;
+        const purchaseDate = new Date().toLocaleDateString('es-ES');
+        let finalY = 80;
+
+        // --- Diseño del Encabezado de la Factura ---
+        doc.setFillColor(33, 37, 41); // Color negro (bg-dark)
+        doc.rect(0, 0, 210, 35, 'F'); 
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(22);
+        doc.setTextColor(255, 255, 255);
+        doc.text("MERCEDES DEALER", 105, 22, null, null, 'center');
+        
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        doc.text("FACTURA DE COMPRA", 105, 50, null, null, 'center');
+
+        doc.setFontSize(10);
+        doc.text(`Cliente: ${cardName || 'Consumidor Final'}`, 14, 65);
+        doc.text(`Fecha: ${purchaseDate}`, 14, 70);
+        
+        // --- Tabla de Productos ---
+        cart.forEach((item, index) => {
+            const y = 80 + (index * 10);
+            doc.setFontSize(10);
+            doc.text(`${item.quantity}x - ${item.marca} ${item.modelo}`, 14, y);
+            doc.text(item.precio_venta.toLocaleString('en-US', { style: 'currency', currency: 'USD' }), 150, y);
+            doc.text((item.precio_venta * item.quantity).toLocaleString('en-US', { style: 'currency', currency: 'USD' }), 200, y, null, null, 'right');
+            finalY = y;
+        });
+
+        const total = cart.reduce((acc, item) => acc + (item.precio_venta * item.quantity), 0);
+
+        doc.setLineWidth(0.5);
+        doc.line(14, finalY + 5, 196, finalY + 5);
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Total:", 150, finalY + 12);
+        doc.text(total.toLocaleString('en-US', { style: 'currency', currency: 'USD' }), 196, finalY + 12, null, null, 'right');
+
+        // --- Firmas y Sello ---
+        const signatureY = finalY + 40;
+        // Sello
+        doc.setFillColor(204, 0, 0); // Rojo
+        doc.circle(175, signatureY + 5, 12, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(10);
+        doc.text("PAGADO", 175, signatureY + 6, null, null, 'center');
+        
+        // Firmas
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('zapfdingbats', 'normal'); // Simula una firma garabateada
+        doc.text('––––––––––', 35, signatureY, null, null, 'center');
+        doc.text('––––––––––', 105, signatureY, null, null, 'center');
+        
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.text('Firma del Vendedor', 35, signatureY + 5, null, null, 'center');
+        doc.text('Firma del Cliente', 105, signatureY + 5, null, null, 'center');
+
+        doc.save(`factura-mercedes-dealer-${new Date().getTime()}.pdf`);
+    };
+
+    const handlePayment = () => {
+        if (cart.length === 0) {
+            alert('Tu carrito está vacío.');
+            return;
+        }
+        alert('¡Pago procesado con éxito! Se generará tu factura.');
+        generateInvoice();
+        
+        cart = [];
+        updateCartUI();
+        
+        document.getElementById('paymentForm').reset();
+        paymentModal.hide();
+        cartModal.hide();
+    };
+
+    // Asignación de Event Listeners
+    searchInput.addEventListener('input', filterVehicles);
+    
+    addToCartModalBtn.addEventListener('click', () => {
+        const quantity = parseInt(quantityInput.value);
+        if (selectedVehicle) addItemToCart(selectedVehicle, quantity);
+    });
+
+    checkoutBtn.addEventListener('click', () => {
+        if(cart.length > 0) paymentModal.show();
+        else alert("El carrito está vacío.");
+    });
+
+    processPaymentBtn.addEventListener('click', handlePayment);
+
+    // Carga inicial de datos
+    loadVehicles();
+});

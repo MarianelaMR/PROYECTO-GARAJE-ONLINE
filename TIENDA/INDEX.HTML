@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercedes Dealer - Concesionario de Lujo</title>
+
+    <!-- SEO y Metadatos -->
+    <meta name="description" content="Mercedes Dealer: Venta de vehículos de lujo y pasolas de alta gama.">
+    <meta name="keywords" content="comprar auto de lujo, concesionario, pasolas, Mercedes Dealer">
+    <meta name="author" content="Mercedes Dealer">
+    
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6.5.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <!-- Estilos Personalizados -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="video-background-holder">
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" id="video-bg">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-black-mercedes-benz-in-a-showcase-4332-large.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Navegación principal">
+            <div class="container">
+                <a class="navbar-brand fw-bolder logo-text" href="#inicio">
+                    <i class="fas fa-star me-2"></i>MERCEDES DEALER
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="#vehiculos">Vehículos de Lujo</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#pasolas">Pasolas</a></li>
+                    </ul>
+                    <form class="d-flex me-3" role="search" onsubmit="return false;">
+                        <input id="searchInput" class="form-control me-2" type="search" placeholder="Buscar modelo..." aria-label="Campo de búsqueda">
+                    </form>
+                    <div class="text-white" role="button" data-bs-toggle="modal" data-bs-target="#cartModal" aria-label="Abrir carrito de compras">
+                        <i class="fas fa-shopping-cart fa-lg"></i>
+                        <span id="cartCount" class="badge rounded-pill bg-primary ms-1">0</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="inicio" class="d-flex align-items-center justify-content-center text-center">
+            <div class="text-white">
+                <h1 class="display-3 fw-bold shadow-text">La Excelencia en Movimiento</h1>
+                <p class="lead fw-normal shadow-text">Donde el lujo y el rendimiento se encuentran.</p>
+            </div>
+        </section>
+
+        <div id="loadingSpinner" class="d-flex justify-content-center my-5">
+            <div class="spinner-border text-light" role="status" style="width: 4rem; height: 4rem;">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+        
+        <div class="container content-container">
+            <div id="searchResults" class="py-5" style="display: none;">
+                <h2 class="text-center mb-4">Resultados de la Búsqueda</h2>
+                <div id="searchResultsContainer" class="row"></div>
+                <hr class="my-5">
+            </div>
+
+            <div id="allProductsSections">
+                <section id="vehiculos" class="py-5">
+                    <h2 class="text-center mb-4">Vehículos de Lujo</h2>
+                    <div id="vehiclesContainer" class="row"></div>
+                </section>
+                <hr class="my-5">
+                <section id="pasolas" class="py-5">
+                    <h2 class="text-center mb-4">Pasolas y Scooters</h2>
+                    <div id="scootersContainer" class="row"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center p-3 mt-auto">
+        <div class="container">
+            <p>&copy; 2025 Mercedes Dealer. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modals (El HTML es el mismo, el script los maneja) -->
+    <div class="modal fade" id="productDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productDetailModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6"><img id="modalProductImage" src="" class="img-fluid rounded"></div>
+                        <div class="col-md-6">
+                            <h3 id="modalProductName"></h3>
+                            <p id="modalProductDescription"></p>
+                            <h4 id="modalProductPrice" class="price-text fw-bold"></h4>
+                            <div id="colorSelectorContainer" class="mb-3">
+                                <label class="form-label">Elige un color:</label>
+                                <div id="modalProductColors" class="d-flex gap-2"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="quantityInput" class="form-label">Cantidad:</label>
+                                <input type="number" id="quantityInput" class="form-control" value="1" min="1">
+                            </div>
+                            <button id="addToCartBtn" class="btn btn-primary w-100">Añadir al Carrito</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="cartModalLabel">Carrito de Compras</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body"><div id="cartItems"></div></div>
+                <div class="modal-footer justify-content-between">
+                    <div><strong>Total: <span id="cartTotal">$0.00</span></strong></div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir Viendo</button>
+                        <button type="button" id="checkoutBtn" class="btn btn-primary">Pagar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="paymentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Formulario de Pago</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="paymentForm">
+                        <div class="mb-3">
+                            <label for="cardName" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="cardName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cardNif" class="form-label">NIF / DNI</label>
+                            <input type="text" class="form-control" id="cardNif" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cardAddress" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="cardAddress" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="processPaymentBtn" class="btn btn-success">Finalizar Compra</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
