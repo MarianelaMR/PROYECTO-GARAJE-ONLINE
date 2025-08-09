@@ -1,0 +1,122 @@
+[
+  {
+    "codigo": 104,
+    "categoria_tienda": "vehiculo",
+    "marca": "Audi",
+    "modelo": "A8",
+    "categoria": "Sedan de Lujo",
+    "precio_venta": 98900,
+    "imagen": "https://media.revistagq.com/photos/5df8ca2c6ceba40008e6e58c/master/w_1600,c_limit/audi-a8-2018-dm-135_1440x655c.jpg",
+    "colores_disponibles": ["#1e2d4d", "#c4c4c4", "#000000"]
+  },
+  {
+    "codigo": 105,
+    "categoria_tienda": "vehiculo",
+    "marca": "Bentley",
+    "modelo": "Bentayga",
+    "categoria": "SUV de Ultra-Lujo",
+    "precio_venta": 210000,
+    "imagen": "https://media.revistagq.com/photos/5df8c20f014c01000854ea0d/master/w_1600,c_limit/bentley-bentayga-speed-4.jpg",
+    "colores_disponibles": ["#002147", "#5a0000", "#e1c699"]
+  },
+  {
+    "codigo": 106,
+    "categoria_tienda": "vehiculo",
+    "marca": "BMW",
+    "modelo": "Serie 7",
+    "categoria": "Sedan Ejecutivo",
+    "precio_venta": 105700,
+    "imagen": "https://media.revistagq.com/photos/5df8c256014c01000854ea13/master/w_1600,c_limit/bmw-serie-7-todos-los-detalles-p90333104_highres_1920x1600c.jpg",
+    "colores_disponibles": ["#000000", "#383838", "#FFFFFF"]
+  },
+  {
+    "codigo": 107,
+    "categoria_tienda": "vehiculo",
+    "marca": "Ferrari",
+    "modelo": "488 Pista",
+    "categoria": "Superdeportivo",
+    "precio_venta": 330000,
+    "imagen": "https://media.revistagq.com/photos/5df8c37f268a24000864ba43/master/w_1600,c_limit/GettyImages-1158697408.jpg",
+    "colores_disponibles": ["#FF2800", "#FFFF00", "#000000"]
+  },
+  {
+    "codigo": 108,
+    "categoria_tienda": "vehiculo",
+    "marca": "Jaguar",
+    "modelo": "XF",
+    "categoria": "Sedan Deportivo",
+    "precio_venta": 65500,
+    "imagen": "https://media.revistagq.com/photos/5df8c4e1268a24000864ba45/master/w_1600,c_limit/jaguar-xf-101_1920x1600c.jpg",
+    "colores_disponibles": ["#003366", "#D3D3D3", "#000000"]
+  },
+  {
+    "codigo": 109,
+    "categoria_tienda": "vehiculo",
+    "marca": "Lamborghini",
+    "modelo": "Aventador SVJ",
+    "categoria": "Hiperdeportivo",
+    "precio_venta": 517770,
+    "imagen": "https://media.revistagq.com/photos/5df8c5886ceba40008e6e582/master/w_1600,c_limit/Captura-de-pantalla-2019-12-17-a-las-13.08.59.jpg",
+    "colores_disponibles": ["#90EE90", "#FFA500", "#6a0dad"]
+  },
+  {
+    "codigo": 110,
+    "categoria_tienda": "vehiculo",
+    "marca": "Land Rover",
+    "modelo": "Defender",
+    "categoria": "Todoterreno",
+    "precio_venta": 72000,
+    "imagen": "https://media.revistagq.com/photos/5df8c5e1268a24000864ba4b/master/w_1600,c_limit/land-rover-defender-clasico-mejoras-p_1440x655c.jpg",
+    "colores_disponibles": ["#2F4F4F", "#A9A9A9", "#FFFFFF"]
+  },
+  {
+    "codigo": 111,
+    "categoria_tienda": "vehiculo",
+    "marca": "Lexus",
+    "modelo": "LS",
+    "categoria": "Sedan de Lujo",
+    "precio_venta": 80685,
+    "imagen": "https://media.revistagq.com/photos/5df8c64f6ceba40008e6e584/master/w_1600,c_limit/2018-lexus-ls-500h-key-features-1920x1080_tcm-3153-1084735.jpg",
+    "colores_disponibles": ["#1a2d53", "#808080", "#E5E4E2"]
+  },
+  {
+    "codigo": 201,
+    "categoria_tienda": "pasola",
+    "marca": "Honda",
+    "modelo": "ACTIVA 125",
+    "categoria": "Scooter Urbano",
+    "precio_venta": 2150,
+    "imagen": "https://motos.honda.com.gt/web/image/1129-9edf4279/activazoomimagen.svg",
+    "colores_disponibles": ["#FF0000", "#0000FF", "#808080"]
+  },
+  {
+    "codigo": 202,
+    "categoria_tienda": "pasola",
+    "marca": "Honda",
+    "modelo": "ELITE 125",
+    "categoria": "Scooter Moderno",
+    "precio_venta": 2400,
+    "imagen": "https://motos.honda.com.gt/web/image/1159-8ff30f54/elite800.svg",
+    "colores_disponibles": ["#000000", "#FFFFFF"]
+  },
+  {
+    "codigo": 203,
+    "categoria_tienda": "pasola",
+    "marca": "Honda",
+    "modelo": "WAVE 110S",
+    "categoria": "CUB",
+    "precio_venta": 1850,
+    "imagen": "https://motos.honda.com.gt/web/image/33815-eeb31703/ZOOM%2520WAVE.svg",
+    "colores_disponibles": ["#FF4500", "#00008B"]
+  },
+  {
+    "codigo": 204,
+    "categoria_tienda": "pasola",
+    "marca": "Nipponia",
+    "modelo": "BS 150",
+    "categoria": "Scooter",
+    "precio_venta": 1999,
+    "imagen": "https://ml1bcyt3kpt1.i.optimole.com/cb:Gir9.3bb43/w:300/h:225/q:mauto/https://nipponiacaribe.com/wp-content/uploads/2024/05/front-left-7.jpg",
+    "colores_disponibles": ["#000000", "#D3D3D3"]
+  }
+]
